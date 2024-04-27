@@ -37,41 +37,61 @@ function Calculator(): React.JSX.Element {
 
     const handleButtonPress = (input: string) => {
         switch(input) {
-          case '+':
-          case '-':
-            // If an operator is already set, calculate the result
-            if (operator) {
-              const result = operator === '+' ? currentValue + parseFloat(displayValue) : currentValue - parseFloat(displayValue);
-              setCurrentValue(result);
-              setDisplayValue(result.toString());
-            } else {
-              setCurrentValue(parseFloat(displayValue));
-            }
-            // Set the new operator
-            setOperator(input);
-            setDisplayValue('0');
-            break;
-          case '=':
-            // Calculate the result
-            if (operator) {
-              const result = operator === '+' ? currentValue + parseFloat(displayValue) : currentValue - parseFloat(displayValue);
-              setCurrentValue(0); // Reset current value
-              setOperator(''); // Reset operator
-              setDisplayValue(result.toString());
-            }
-            break;
-          case 'C':
-            // Clear the display and reset state
-            setDisplayValue('0');
-            setCurrentValue(0);
-            setOperator('');
-            break;
-          default:
-            // Append the input to the display value
-            setDisplayValue(prevValue => prevValue === '0' ? input : prevValue + input);
-            break;
+            case '÷':
+            case 'x':
+            case '+':
+            case '-':
+                // If an operator is already set, calculate the result
+                let result = 0;
+                if (operator) {
+                    if (operator === '÷') {
+                        result = currentValue / parseFloat(displayValue);
+                    } else if (operator === 'x') {
+                        result = currentValue * parseFloat(displayValue);
+                    } else if (operator === '+') {
+                        result = currentValue + parseFloat(displayValue);
+                    } else if (operator === '-') {
+                        result = currentValue - parseFloat(displayValue);
+                    }
+                    setCurrentValue(result);
+                    setDisplayValue(result.toString());
+                } else {
+                    setCurrentValue(parseFloat(displayValue));
+                }
+                 // Set the new operator
+                 setOperator(input);
+                 setDisplayValue('0');
+                 break;
+            case '=':
+                // Calculate the result
+                let result2 = 0;
+                if (operator) {
+                    if (operator === '÷') {
+                        result2 = currentValue / parseFloat(displayValue);
+                    } else if (operator === 'x') {
+                        result2 = currentValue * parseFloat(displayValue);
+                    } else if (operator === '+') {
+                        result2 = currentValue + parseFloat(displayValue);
+                    } else if (operator === '-') {
+                        result2 = currentValue - parseFloat(displayValue);
+                    }
+                    setCurrentValue(0); // Reset current value
+                    setOperator(''); // Reset operator
+                    setDisplayValue(result2.toString());
+                }
+                break;
+            case 'C':
+                // Clear the display and reset state
+                setDisplayValue('0');
+                setCurrentValue(0);
+                setOperator('');
+                break;
+            default:
+                // Append the input to the display value
+                setDisplayValue(prevValue => prevValue === '0' ? input : prevValue + input);
+                break;
         }
-      };
+    };
 
   const isDarkMode = useColorScheme() === 'dark';
 
@@ -177,7 +197,7 @@ const styles = StyleSheet.create({
         marginTop: 16,
       },
       button: {
-        backgroundColor: '#2196F3', // Blue color, you can adjust it
+        backgroundColor: '#2196F3',
         padding: 20,
         borderRadius: 20,
         width: '21%',
@@ -188,7 +208,7 @@ const styles = StyleSheet.create({
         fontSize: 24,
       },
       displayArea: {
-        backgroundColor: '#333', // Dark background color for display area
+        backgroundColor: '#333',
         padding: 20,
         borderRadius: 10,
         marginBottom: 20,

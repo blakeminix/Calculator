@@ -92,14 +92,10 @@ function Calculator(): React.JSX.Element {
             default:
                 // Append the input to the display value
                 if (isResOperator) {
-                    setDisplayValue(input);
-                    isResOperator = false;
+                  setDisplayValue(input);
+                  isResOperator = false;
                 } else {
-                  if (input != '.') {
-                    setDisplayValue(prevValue => prevValue === '0' ? input : prevValue + input);
-                  } else {
-                    setDisplayValue(prevValue => prevValue + input);
-                  }
+                  setDisplayValue(prevValue => prevValue === '0' ? input : prevValue + input);
                 }
                 break;
         }
@@ -108,18 +104,16 @@ function Calculator(): React.JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
 
   const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+    backgroundColor: Colors.darker,
   };
 
   return (
-    <SafeAreaView style={backgroundStyle}>
+    <SafeAreaView style={[styles.container, backgroundStyle]}>
       <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
+        barStyle={'dark-content'}
         backgroundColor={backgroundStyle.backgroundColor}
       />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
+      <View style={styles.mainContent}>
         <Section title="">
             <View style={styles.displayArea}>
                 <Text style={styles.displayText}>{displayValue}</Text>
@@ -128,8 +122,8 @@ function Calculator(): React.JSX.Element {
             <TouchableOpacity style={styles.button} onPress={() => handleButtonPress('C')}>
               <Text style={styles.buttonText}>C</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.button} onPress={() => handleButtonPress('(-)')}>
-              <Text style={styles.buttonText}>(-)</Text>
+            <TouchableOpacity style={styles.button} onPress={() => handleButtonPress('+/-')}>
+              <Text style={styles.buttonText}>+/-</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.button} onPress={() => handleButtonPress('%')}>
               <Text style={styles.buttonText}>%</Text>
@@ -193,12 +187,23 @@ function Calculator(): React.JSX.Element {
             </TouchableOpacity>
           </View>
         </Section>
-      </ScrollView>
+      </View>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      justifyContent: 'flex-end',
+      paddingTop: 40,
+      paddingBottom: 40,
+    },
+    mainContent: {
+      flex: 1,
+      justifyContent: 'flex-end',
+      marginBottom: 40,
+    },
     sectionContainer: {
         marginTop: 32,
         paddingHorizontal: 24,
@@ -213,7 +218,7 @@ const styles = StyleSheet.create({
         marginTop: 16,
       },
       button: {
-        backgroundColor: '#2196F3',
+        backgroundColor: '#205b7a',
         padding: 20,
         borderRadius: 20,
         width: '21%',
@@ -224,7 +229,7 @@ const styles = StyleSheet.create({
         fontSize: 24,
       },
       zeroButton: {
-        backgroundColor: '#2196F3',
+        backgroundColor: '#205b7a',
         padding: 20,
         borderRadius: 20,
         width: '48%',

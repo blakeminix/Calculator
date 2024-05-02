@@ -31,6 +31,7 @@ function Section({children, title}: SectionProps): React.JSX.Element {
 }
 
 let isResOperator = false;
+let singleOp = false;
 
 function Calculator(): React.JSX.Element {
     const [displayValue, setDisplayValue] = useState('0');
@@ -55,15 +56,27 @@ function Calculator(): React.JSX.Element {
                     } else if (operator === '-') {
                         result = currentValue - parseFloat(displayValue);
                     }
-                    setCurrentValue(result);
-                    setDisplayValue(result.toString());
+                    if (!singleOp) {
+                      setCurrentValue(result);
+                      setDisplayValue(result.toString());
+                    }
                 } else {
                     setCurrentValue(parseFloat(displayValue));
                 }
                  // Set the new operator
                  setOperator(input);
+                 singleOp = true;
                  isResOperator = true;
                  break;
+            case "+/-":
+              var res: number = -displayValue;
+              setDisplayValue(res.toString());
+              break;
+            case '%':
+              var res1: number = +displayValue / 100;
+              isResOperator = true;
+              setDisplayValue(res1.toString());
+              break;
             case '=':
                 // Calculate the result
                 let result2 = 0;
@@ -81,6 +94,7 @@ function Calculator(): React.JSX.Element {
                     setOperator(''); // Reset operator
                     setDisplayValue(result2.toString());
                     isResOperator = true;
+                    singleOp = false;
                 }
                 break;
             case 'C':
@@ -88,15 +102,25 @@ function Calculator(): React.JSX.Element {
                 setDisplayValue('0');
                 setCurrentValue(0);
                 setOperator('');
+                singleOp = false;
                 break;
             default:
                 // Append the input to the display value
                 if (isResOperator) {
-                  setDisplayValue(input);
+                  if (input == '.') {
+                    setDisplayValue('0' + input);
+                  } else {
+                    setDisplayValue(input);
+                  }
                   isResOperator = false;
                 } else {
-                  setDisplayValue(prevValue => prevValue === '0' ? input : prevValue + input);
+                  if (input == '.') {
+                    setDisplayValue(prevValue => prevValue === '0' ? prevValue + input : prevValue + input);
+                  } else {
+                    setDisplayValue(prevValue => prevValue === '0' ? input : prevValue + input);
+                  }
                 }
+                singleOp = false;
                 break;
         }
     };
